@@ -7,11 +7,11 @@
             <field name="state">code</field>
             <field name="code">
               <![CDATA[
+# Get today's date
 today = datetime.datetime.today()
-# Get today's date customer who have not done invoice payment within the due date
 
-seven_days_ago = today - datetime.timedelta(days=7)
 # Calculate seven days ago
+seven_days_ago = today - datetime.timedelta(days=7)
 
 # Search for unpaid invoices older than 7 days
 unpaid_invoices = env['account.move'].search([('move_type', '=', 'out_invoice'),('state', '=', 'posted'), ('payment_state', '=', 'not_paid'),('invoice_date_due', '<=', seven_days_ago)])
@@ -22,7 +22,6 @@ template = env.ref('invoice_payment_reminder.mail_template_payment_reminder', ra
 if template:
     for invoice in unpaid_invoices:
         template.send_mail(invoice.id, email_layout_xmlid='mail.mail_notification_light', force_send=True)
-
               ]]>
             </field>
             <field name="active" eval="True"/>
