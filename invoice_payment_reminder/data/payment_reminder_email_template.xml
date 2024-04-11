@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <!-- Email Template for Payment Reminder -->
+        <record id="mail_template_payment_reminder" model="mail.template">
+            <field name="name">Payment Reminder</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="subject">Reminder: Outstanding invoice payment reminder for ${object.name}</field>
+            <field name="email_from">${object.company_id.email}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html">
+                <![CDATA[
+                <div>
+                    <!-- Customize email content with dynamic data -->
+                    <p>Dear <t t-out="object.partner_id.name or ''"/>,</p>
+                    <p>I hope this email finds you well.</p>
+
+                    <p>We regret to inform you that we have not yet received payment for Invoice: <t t-out='object.name'/> which was due on <t t-out='object.invoice_date_due'/>.</p>
+
+                    <p>We understand that oversights can occur, and we kindly remind you of the importance of settling this invoice promptly to avoid any disruption in our services or further escalation.</p>
+
+                    <p>Please treat this matter with urgency, and ensure that the payment is processed at your earliest convenience.</p>
+
+                    <p>If there are any issues or discrepancies with the invoice that need to be addressed, please don't hesitate to reach out to us. We are here to assist you in resolving any concerns.</p>
+
+                    <p>Thank you for your attention to this matter, and we appreciate your cooperation in resolving this outstanding payment.</p>
+
+                    <p>You can view the invoice details and make the payment by clicking the link below:</p>
+                    <p>Best regards,</p>
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            <td style="border-radius: 3px; text-align: center; background: #875A7B">
+                                <a style="font-size: 12px; color: #FFFFFF; display: block; padding: 8px 12px 11px; text-decoration: none !important; font-weight: 400;" t-attf-href="/web?#id={{ object.id }}&amp;view_type=form&amp;model=account.move" class="btn btn-primary">View Invoice</a>
+                            </td>
+
+                        </tbody>
+                    </table>
+                </div>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>
